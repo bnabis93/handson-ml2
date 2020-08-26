@@ -1,5 +1,3 @@
-# Ch04, Regression
-
 지도 학습의 대표적인 문제인 Regression에 대해서 자세히 살펴보자.
 
 ## Linear regression
@@ -64,3 +62,70 @@
 
 - 다항 회귀 식을 사용 할 때 (model complexity가 높아질 때) 우리는 overfitting을 생각해야함
 - overfitting 유무를 파악하기 위하여 학습 곡선을 확인한다.
+
+## 규제가 있는 선형모델
+
+모델의 가중치를 제한함으로써 regularization 을 진행함
+
+### Ridge regression
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/860bc63d-8194-49b1-8be3-58eeb1112b88/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/860bc63d-8194-49b1-8be3-58eeb1112b88/Untitled.png)
+
+Figure : Ridge regression
+[https://rstatisticsblog.com/wp-content/uploads/2020/05/ridge.jpg](https://rstatisticsblog.com/wp-content/uploads/2020/05/ridge.jpg)
+
+- Ridge regression's cost function
+
+    $$J(\theta) = MSE (\theta) + \alpha{1\over2}\sum{\theta^2}$$
+
+- Hyper parameter인 alpha가 모델을 얼마나 규제 할 지 결정한다.
+- Ridge regression의 정규방정식
+
+    $$\hat{\theta} = (X^T X+ \alpha {A})^{-1} X^T y$$
+
+- 파라미터가 global minima에 다다를수록 gradient가 작아져 gradient descent가 느려지고, 수렴에 도움이 됨 (진동이 없음)
+
+### Lasso regression
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ceab72d6-a702-474c-9323-e2f425d1c5c7/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/ceab72d6-a702-474c-9323-e2f425d1c5c7/Untitled.png)
+
+Figure : Lasso regression
+[https://i.imgur.com/xsa2fNQ.png](https://i.imgur.com/xsa2fNQ.png)
+
+- Lasso regression's cost function
+
+$$J(\theta) = MSE (\theta) + \alpha{1\over2}\sum{\vert \theta \vert }$$
+
+- 덜 중요한 feature의 가중치를 제거하는 효과가 있음
+- 자동으로 feature selection을 진행하고, 결과로 sparse matrix를 만든다.
+- Lasso는 theta = 0 일 때, 미분 가능하지 않다. 하지만 subgradient vector를 사용하면 문제없이 사용 할 수 있음
+- Subgradient vector는 미분 불가능한 지점 근방 값들의 중간값이라 보면 된다.
+
+### Elastic net
+
+- Ridge + Lasso 형태의 모델. ridge와 lasso를 단순히 더해서 사용하며 비율은 hyper paramter로써 조절된다.
+- Feature의 수가 훈련 샘플 수보다 많거나 몇개가 강하게 연결되어 있을 경우 Lasso 보다 Elastic net을 사용한다.
+
+### Early stopping
+
+- Validation error가 최소에 도달하면 훈련을 중지시키는 방법
+- Validation error가 최소에 도달하고 다시 상승하면 이때부터 overfitting 이 시작된다는 것에서 착안한 방법
+
+## Logistic regression
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6bfe27d8-ab9f-45a9-a2b8-ea30ddac3445/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6bfe27d8-ab9f-45a9-a2b8-ea30ddac3445/Untitled.png)
+
+Figure : Logistic regression
+[https://i.ytimg.com/vi/Vh_7QttroGM/maxresdefault.jpg](https://i.ytimg.com/vi/Vh_7QttroGM/maxresdefault.jpg)
+
+로지스틱 회귀는 분류에 사용 될 수 있고, 선형 회귀처럼 바로 결과를 출력하지 않고 결과값의 로지스틱을 출력함
+로지스틱은 다음과 같은 식으로 출력한다.
+
+$$\hat{p} = h_{\theta} = \sigma(\theta^TX)$$
+
+로지스틱은 0과 1사이의 값을 출력하는 sigmoid 함수이다. 
+
+![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e59ac0a8-dce7-46ba-bcb3-e2ff89df1507/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e59ac0a8-dce7-46ba-bcb3-e2ff89df1507/Untitled.png)
+
+Figure : sigmoid function
+[https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F275BAD4F577B669920](https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F275BAD4F577B669920)
